@@ -6,11 +6,14 @@
 """
 import sys, os
 sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
+
 from python_motion_planning import *
+
+from python_motion_planning import Grid
 
 if __name__ == '__main__':
     # Create environment with custom obstacles
-    grid_env = Grid(51, 31)
+    grid_env = Grid(51, 31, 3)
     obstacles = grid_env.obstacles
     for i in range(10, 21):
         obstacles.add((i, 15))
@@ -40,7 +43,7 @@ if __name__ == '__main__':
 
 
     # -------------global planners-------------
-    plt = AStar(start=(5, 5), goal=(45, 25), env=grid_env)
+    plt = AStar(start=(5, 5, 0), goal=(45, 25, 1), env=grid_env)
     # plt = DStar(start=(5, 5), goal=(45, 25), env=grid_env)
     # plt = DStarLite(start=(5, 5), goal=(45, 25), env=grid_env)
     # plt = Dijkstra(start=(5, 5), goal=(45, 25), env=grid_env)
