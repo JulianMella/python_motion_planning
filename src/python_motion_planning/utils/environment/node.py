@@ -38,7 +38,7 @@ class Node(object):
     
     def __add__(self, node):
         assert isinstance(node, Node)
-        return Node((self.x + node.x, self.y + node.y), self.parent, self.g + node.g, self.h)
+        return Node((self.x + node.x, self.y + node.y, self.z + node.z), self.parent, self.g + node.g, self.h)
 
     def __eq__(self, node) -> bool:
         if not isinstance(node, Node):
@@ -69,6 +69,10 @@ class Node(object):
     @property
     def y(self) -> float:
         return self.current[1]
+    
+    @property
+    def z(self) -> float:
+        return self.current[2]
 
     @property
     def px(self) -> float:

@@ -32,7 +32,7 @@ class Env(ABC):
 
     @property
     def grid_map(self) -> set:
-        return {(i, j) for i in range(self.x_range) for j in range(self.y_range)}
+        return {(i, j, k) for i in range(self.x_range) for j in range(self.y_range) for k in range(self.z_range)}
 
     @abstractmethod
     def init(self) -> None:
@@ -46,7 +46,7 @@ class Grid(Env):
         x_range (int): x-axis range of enviroment
         y_range (int): y-axis range of environmet
     """
-    def __init__(self, x_range: int, y_range: int) -> None:
+    def __init__(self, x_range: int, y_range: int, z_range: int, xd: int) -> None:
         super().__init__(x_range, y_range)
         # allowed motions
         self.motions = [Node((-1, 0), None, 1, None), Node((-1, 1),  None, sqrt(2), None),
@@ -62,16 +62,23 @@ class Grid(Env):
         """
         Initialize grid map.
         """
-        x, y = self.x_range, self.y_range
+        x, y, z = self.x_range, self.y_range, self.z_range
         obstacles = set()
 
         # boundary of environment
         for i in range(x):
-            obstacles.add((i, 0))
-            obstacles.add((i, y - 1))
+            for j in range(z):
+                obstacles.add((i, 0, j))
+                obstacles.add((i, y - 1, j))
         for i in range(y):
-            obstacles.add((0, i))
-            obstacles.add((x - 1, i))
+            for j in range(z):
+                obstacles.add((0, i, j))
+                obstacles.add((x - 1, i, j))
+        for i in range(x):
+            for j in range(y):
+                obstacles.add((i, j, 0))
+                obstacles.add((i, j, z - 1))
+        
 
         self.update(obstacles)
 
