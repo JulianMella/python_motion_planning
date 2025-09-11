@@ -67,7 +67,7 @@ if __name__ == '__main__':
     # grid_env.inner_obstacles.clear()
 
     common_start = (1,1,1)
-    goals_short = [(1,18,8)]
+    goals_short = [(1,18,8),(1,17,8),(1,16,8),(1,15,8),(1,14,8),(1,13,8),(1,12,8)]
     goals_long = []
 
     
@@ -77,15 +77,17 @@ if __name__ == '__main__':
         ('A*', lambda start, goal, env: AStar(start=start, goal=goal, env=env))
     ]
 
-    for name, alg_func in algorithms:
-        plt = alg_func(start=common_start, goal=goals_short[0], env=grid_env)
-        cost, expand = plt.run()
-        algorithm_name.append(plt.__str__())
-        x_size.append(x)
-        y_size.append(y)
-        z_size.append(z)
-        cost_array.append(cost)
-        search_area_array.append(len(expand))
+    for goal in goals_short:
+
+        for name, alg_func in algorithms:
+            plt = alg_func(start=common_start, goal=goal, env=grid_env)
+            cost, expand = plt.run()
+            algorithm_name.append(plt.__str__())
+            x_size.append(x)
+            y_size.append(y)
+            z_size.append(z)
+            cost_array.append(cost)
+            search_area_array.append(len(expand))
 
 
       
