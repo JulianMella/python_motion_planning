@@ -1,6 +1,6 @@
 import pandas as pd
 import sys, os
-sys.path.insert(0, '/Users/anund/in5060/python_motion_planning/src')
+sys.path.insert(0, '/Users/hermanbr/Master/IN5060/python_motion_planning/src')
 sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 from python_motion_planning import *
 
