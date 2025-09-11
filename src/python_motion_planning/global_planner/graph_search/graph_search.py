@@ -76,11 +76,11 @@ class GraphSearcher(Planner):
             (node1.current in self.env.inner_obstacles or node2.current in self.env.inner_obstacles))):
             return True
 
-
-
-
         x1, y1, z1 = node1.x, node1.y, node1.z
         x2, y2, z2 = node2.x, node2.y, node2.z
+
+
+        obstacles = self.obstacles | self.env.inner_obstacles
 
         # XY-plane
         if x1 != x2 and y1 != y2 and z1 == z2:
@@ -92,7 +92,7 @@ class GraphSearcher(Planner):
                 # Get either top and right cell between diagonal or bottom and left
                 s1 = (min(x1, x2), max(y1, y2), z1)
                 s2 = (max(x1, x2), min(y1, y2), z1)
-            if s1 in self.obstacles or s2 in self.obstacles:
+            if s1 in obstacles or s2 in obstacles:
                 return True
 
         # XZ-plane
@@ -103,7 +103,7 @@ class GraphSearcher(Planner):
             else:
                 s1 = (min(x1, x2), y1, max(z1, z2))
                 s2 = (max(x1, x2), y1, min(z1, z2))
-            if s1 in self.obstacles or s2 in self.obstacles:
+            if s1 in obstacles or s2 in obstacles:
                 return True
 
         # YZ-plane
@@ -114,7 +114,7 @@ class GraphSearcher(Planner):
             else:
                 s1 = (x1, min(y1, y2), max(z1, z2))
                 s2 = (x1, max(y1, y2), min(z1, z2))
-            if s1 in self.obstacles or s2 in self.obstacles:
+            if s1 in obstacles or s2 in obstacles:
                 return True
 
         # XYZ-plane
@@ -124,7 +124,7 @@ class GraphSearcher(Planner):
             s2 = (x1, y2, z1)
             s3 = (x1, y1, z2)
 
-            if s1 in self.obstacles or s2 in self.obstacles or s3 in self.obstacles:
+            if s1 in obstacles or s2 in obstacles or s3 in obstacles:
                 return True
 
         return False
