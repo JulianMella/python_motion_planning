@@ -114,7 +114,8 @@ class Plot:
             self.ax.set_xlabel('X')
             self.ax.set_ylabel('Y')
             self.ax.set_zlabel('Z')
-            self.ax.set_box_aspect([1,1,1])
+            #self.ax.set_box_aspect([1,1,1])
+            self.ax.set_box_aspect([self.env.x_range, self.env.y_range, self.env.z_range])
             plt.title(name)
 
         return
