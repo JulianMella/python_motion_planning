@@ -1,6 +1,6 @@
 import pandas as pd
 import sys, os
-sys.path.insert(0, '/Users/hermanbr/Master/IN5060/python_motion_planning/src')
+sys.path.insert(0, '/Users/anund/in5060/python_motion_planning/src')
 sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 from python_motion_planning import *
 
@@ -66,17 +66,31 @@ if __name__ == '__main__':
 
     # grid_env.inner_obstacles.clear()
 
-    common_start = (1,1,1)
-    goals_short = [(1,18,8),(1,17,8),(1,16,8),(1,15,8),(1,14,8),(1,13,8),(1,12,8)]
+    common_start = (18,10,1)
+    goals_short = [(1,17,1),(1,17,8),(1,16,8),(1,15,8),(1,14,8),(1,13,8),(1,12,8)]
     goals_long = []
 
+    x = 8
+    y = 8
+    z = 8
+
+    goals = []
+
+    for idx in range (x):
+        for idy in range(y):
+            for idz in range(z):
+                point = (idx,idy,idz)
+                goals.append(point)
+    print("length of list goals is: ", len(goals))
+   
     
     # algorithms we want to run
     algorithms = [
-        ('Dijkstra', lambda start, goal, env: Dijkstra(start=start, goal=goal, env=env)),
-        ('A*', lambda start, goal, env: AStar(start=start, goal=goal, env=env))
+        #('Dijkstra', lambda start, goal, env: Dijkstra(start=start, goal=goal, env=env)),
+        #('A*', lambda start, goal, env: AStar(start=start, goal=goal, env=env)),
+        ('Theta*', lambda start, goal, env: ThetaStar(start=start, goal=goal, env=env))
     ]
-
+    x = 0
     for goal in goals_short:
 
         for name, alg_func in algorithms:
@@ -88,6 +102,9 @@ if __name__ == '__main__':
             z_size.append(z)
             cost_array.append(cost)
             search_area_array.append(len(expand))
+            x+=1
+            print(x,"of",len(goals) )
+            break
 
 
       
