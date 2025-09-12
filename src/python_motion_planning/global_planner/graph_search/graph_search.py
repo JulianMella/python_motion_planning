@@ -80,7 +80,9 @@ class GraphSearcher(Planner):
         x2, y2, z2 = node2.x, node2.y, node2.z
 
 
-        obstacles = self.obstacles | self.env.inner_obstacles
+        #obstacles = self.obstacles | self.env.inner_obstacles
+        #obstacles = (self.env.inner_obstacles + self.obstacles)
+        obstacles = self.obstacles.union(self.env.inner_obstacles)
 
         # XY-plane
         if x1 != x2 and y1 != y2 and z1 == z2:
