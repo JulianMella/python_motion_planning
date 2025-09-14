@@ -1,8 +1,10 @@
+import timeit
 import pandas as pd
 import sys, os
-sys.path.insert(0, '/Users/hermanbr/Master/IN5060/python_motion_planning/src')
+sys.path.insert(0, '/Users/anund/in5060/python_motion_planning/src')
 sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 from python_motion_planning import *
+from datetime import datetime, time
 import math
 import random as rand
 
@@ -35,7 +37,7 @@ if __name__ == '__main__':
     y = 40
     z = 5
     grid_env = Grid(x, y, z)
-
+    
     basic_grid_obstacles = []
     base_pattern = [
         # Z = 1 (base layer - extended with holes)
@@ -62,29 +64,10 @@ if __name__ == '__main__':
     basic_grid_obstacles = list(set(basic_grid_obstacles))  # Remove any duplicates
     grid_env.inner_obstacles = basic_grid_obstacles
 
-    #grid_env.plot.animation(None, None, None, None)
-    #self.plot.animation(path, str(self), cost, expand)
-
-    # inner_obstacles = set()
-    # for i in range(x):
-    #     for j in range(y):
-    #         inner_obstacles.add((i, j, 7))
-    #         inner_obstacles.add((i, j, 5))
-    #         inner_obstacles.add((i, j, 3))
-
-    # inner_obstacles.remove((8,8,3))
-    # inner_obstacles.remove((1,1,5))
-    # inner_obstacles.remove((5,5,7))
-
-    # grid_env.inner_obstacles = inner_obstacles
-
-    # grid_env.inner_obstacles.clear()
 
     common_start = (38,19,1)
-    #goals_short = [(1,17,1),(1,17,8),(1,16,8),(1,15,8),(1,14,8),(1,13,8),(1,12,8)]
     goals_short = []
     goals_long = []
-
     goals_long = []
 
 
@@ -120,6 +103,7 @@ if __name__ == '__main__':
                     found_enough = True
                     break
                     
+                    
 
     print(f"Made long goals. Amount: {len(goals_long)}")
     print(f"Made short goals. Amount: {len(goals_short)}")
@@ -131,14 +115,19 @@ if __name__ == '__main__':
     algorithms = [
         ('Dijkstra', lambda start, goal, env: Dijkstra(start=start, goal=goal, env=env)),
         ('A*', lambda start, goal, env: AStar(start=start, goal=goal, env=env)),
-        ('Theta*', lambda start, goal, env: ThetaStar(start=start, goal=goal, env=env))
+        ('Theta*', lambda start, goal, env: ThetaStar(start=start, goal=goal, env=env)),
+        ('JPS', lambda start, goal, env: JPS(start=start, goal=goal, env=env))
     ]
     x = 0
+
+    time = []
     for goal in goals_long:
 
         for name, alg_func in algorithms:
             plt = alg_func(start=common_start, goal=goal, env=grid_env)
+            start_time = timeit.default_timer()
             cost, expand = plt.run()
+            end_time = timeit.default_timer()
             algorithm_name.append(plt.__str__())
             x_size.append(x)
             y_size.append(y)
@@ -147,6 +136,10 @@ if __name__ == '__main__':
             search_area_array.append(len(expand))
             length_array.append("long")
             x+=1
+            time.append(end_time-start_time)
+            print("Algo", x, "of", len(goals_long)*len(algorithms))
+
+
 
     for goal in goals_short:
 
@@ -161,9 +154,12 @@ if __name__ == '__main__':
             search_area_array.append(len(expand))
             length_array.append("short")
             x+=1
+            time.append(end_time-start_time)
+            print("Algo", x, "of", len(goals_short)*len(algorithms))
 
 
-    dict = {'algorithm': algorithm_name, 'x_size': x_size, 'y_size': y_size, 'z_size': z_size, 'cost': cost_array, 'search_area': search_area_array, 'radius': length_array}
+
+    dict = {'algorithm': algorithm_name, 'x_size': x_size, 'y_size': y_size, 'z_size': z_size, 'cost': cost_array, 'search_area': search_area_array, 'radius': length_array, 'time':time}
 
     data_frame = pd.DataFrame(dict)
     print("reach")

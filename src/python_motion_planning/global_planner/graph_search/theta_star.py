@@ -65,7 +65,6 @@ class ThetaStar(AStar):
 
             # goal found
             if node == self.goal:
-                print("Found goal")
                 CLOSED[node.current] = node
                 cost, path = self.extractPath(CLOSED)
                 return cost, path, list(CLOSED.values())
